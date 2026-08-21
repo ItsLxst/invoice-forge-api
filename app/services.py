@@ -1,18 +1,44 @@
 from reportlab.pdfgen import canvas
 from app.schemas import Invoice
 
+
 def create_pdf(info: Invoice):
-    empty_canvas = canvas.Canvas("invoice.pdf")
+    invoice_pdf = canvas.Canvas("invoice.pdf")
 
-    empty_canvas.drawString(100, 780, info.customer.customer_name)
-    empty_canvas.drawString(100, 765, info.customer.customer_email)
+    # title
+    invoice_pdf.setFont("Helvetica-Bold", 24)
+    invoice_pdf.drawString(250, 750, "INVOICE")
 
-    x = 100
-    y = 750
+    # customer info
+    invoice_pdf.setFont("Helvetica", 12)
+    invoice_pdf.drawString(100, 700, f"Customer: {info.customer.customer_name}")
+    invoice_pdf.drawString(100, 680, f"Email: {info.customer.customer_email}")
+
+    # table headers
+    invoice_pdf.setFont("Helvetica-Bold", 11)
+    invoice_pdf.drawString(100, 630, "Product")
+    invoice_pdf.drawString(350, 630, "Quantity")
+    invoice_pdf.drawString(450, 630, "Price")
+
+    # invoice items
+    invoice_pdf.setFont("Helvetica", 11)
+
+    y = 605
+    total = 0
+
     for item in info.items:
-        item_text = f"{item.name} | Quantity: {item.quantity} | Price: {item.price}"
-        empty_canvas.drawString(x, y, item_text)
-        y -= 15
+        item_total = item.quantity * item.price
+        total += item_total
 
-    empty_canvas.showPage()
-    empty_canvas.save()
+        invoice_pdf.drawString(100, y, item.name)
+        invoice_pdf.drawString(350, y, str(item.quantity))
+        invoice_pdf.drawString(450, y, f"${item.price:.2f}")
+
+        y -= 25
+
+    # total
+    invoice_pdf.setFont("Helvetica-Bold", 12)
+    invoice_pdf.drawString(350, y - 10, f"Total: ${total:.2f}")
+
+    invoice_pdf.showPage()
+    invoice_pdf.save()
