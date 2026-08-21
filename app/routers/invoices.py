@@ -5,4 +5,8 @@ router = APIRouter()
 
 @router.post("/")
 async def get_invoices_info(info: Invoice):
-    return {"message": "Hello World"}
+    return {
+        "customer": info.customer.customer_name,
+        "customer_email": info.customer.customer_email,
+        "items": info.items
+    }
