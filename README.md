@@ -2,4 +2,4 @@
 
 Automated Billing Service
 
-> Code refactor and full README will arrive shortly._a
+> Code refactor and full README will arrive shortly.
