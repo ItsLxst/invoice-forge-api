@@ -1,6 +1,6 @@
 from reportlab.pdfgen import canvas
 from app.schemas import Invoice
-import uuid # create unique id
+import uuid # create unique id (Universally Unique Identifier)
 
 
 def create_pdf(info: Invoice):
