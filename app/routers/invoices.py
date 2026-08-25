@@ -7,5 +7,5 @@ router = APIRouter()
 
 @router.post("/")
 async def get_invoices_info(info: Invoice):
-    create_pdf(info)
-    return FileResponse("invoice.pdf")
+    filename = create_pdf(info)
+    return FileResponse(filename)

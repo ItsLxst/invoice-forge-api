@@ -1,9 +1,11 @@
 from reportlab.pdfgen import canvas
 from app.schemas import Invoice
+import uuid # create unique id
 
 
 def create_pdf(info: Invoice):
-    invoice_pdf = canvas.Canvas("invoice.pdf")
+    filename = f"invoice_{uuid.uuid4()}.pdf"
+    invoice_pdf = canvas.Canvas(filename)
 
     # title
     invoice_pdf.setFont("Helvetica-Bold", 24)
@@ -42,3 +44,4 @@ def create_pdf(info: Invoice):
 
     invoice_pdf.showPage()
     invoice_pdf.save()
+    return filename
